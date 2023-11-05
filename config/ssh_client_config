@@ -1,0 +1,5 @@
+Host hobl.at
+     HostName 94.237.86.96
+     User root
+     IdentityFile ~/.ssh/nam_rsa
+
