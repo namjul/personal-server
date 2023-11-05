@@ -1,6 +1,6 @@
 HOST='hobl.at'
 
-.PHONY: install package
+.PHONY: install package ssh
 
 install:
 	sops -d --extract '["public_key"]' --output ~/.ssh/nam_rsa.pub secrets/ssh.yml
@@ -11,3 +11,7 @@ install:
 
 package:
 	ssh ${HOST} 'apt update && apt upgrade && apt autoremove && apt clean'
+
+# Check if the file is different from our git repository and if it is the case re-upload and restart the ssh server
+ssh:
+	ssh ${HOST} "cat /etc/ssh/sshd_config" | diff  - config/sshd_config || (scp config/sshd_config ${HOST}:/etc/ssh/sshd_config && ssh ${HOST} systemctl restart)
