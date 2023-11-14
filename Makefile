@@ -8,6 +8,7 @@ install:
 	chmod 600 ~/.ssh/nam_rsa.*
 	grep -q hobl.at ~/.ssh/config > /dev/null 2>&1 || cat config/ssh_client_config >> ~/.ssh/config
 	mkdir ~/.kube || exit 0
+	sops -d --output ~/.kube/config secrets/kubernetes-config.yml
 
 package:
 	ssh ${HOST} 'apt-get update && apt-get install -y curl vim'
@@ -22,3 +23,5 @@ firewall:
 	scp config/ufw.sh ${HOST}:/tmp/ufw.sh
 	ssh ${HOST} 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
 
+install_k3s:
+	ssh ${HOST} 'export INSTALL_K3S_EXEC=" --disable servicelb --disable traefik --disable local-storage"; curl -sfL https://get.k3s.io | sh -'
