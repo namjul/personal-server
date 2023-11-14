@@ -10,7 +10,9 @@ install:
 	mkdir ~/.kube || exit 0
 
 package:
-	ssh ${HOST} 'apt update && apt upgrade && apt autoremove && apt clean'
+	ssh ${HOST} 'apt-get update && apt-get install -y curl vim'
+	# Enable automatic security Updates
+	ssh ${HOST} 'echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections && apt-get install unattended-upgrades -y'
 
 # Check if the file is different from our git repository and if it is the case re-upload and restart the ssh server
 ssh:
