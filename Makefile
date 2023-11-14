@@ -17,3 +17,8 @@ package:
 # Check if the file is different from our git repository and if it is the case re-upload and restart the ssh server
 ssh:
 	ssh ${HOST} "cat /etc/ssh/sshd_config" | diff  - config/sshd_config || (scp config/sshd_config ${HOST}:/etc/ssh/sshd_config && ssh ${HOST} systemctl restart)
+
+firewall:
+	scp config/ufw.sh ${HOST}:/tmp/ufw.sh
+	ssh ${HOST} 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
+
