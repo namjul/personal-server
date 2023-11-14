@@ -1,6 +1,6 @@
 HOST='hobl.at'
 
-.PHONY: install package ssh
+.PHONY: install package ssh firewall install_k3s install_helm k8s
 
 install:
 	sops -d --extract '["public_key"]' --output ~/.ssh/nam_rsa.pub secrets/ssh.yml
@@ -25,3 +25,10 @@ firewall:
 
 install_k3s:
 	ssh ${HOST} 'export INSTALL_K3S_EXEC=" --disable servicelb --disable traefik --disable local-storage"; curl -sfL https://get.k3s.io | sh -'
+
+k8s:
+	kubectl apply -f k8s/ingress-nginx-v1.8.2.yml
+	kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=120s
