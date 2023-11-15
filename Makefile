@@ -32,3 +32,7 @@ k8s:
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=120s
+
+site:
+	kubectl apply -f site.yml
+
