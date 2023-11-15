@@ -32,6 +32,8 @@ k8s:
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=120s
+	kubectl apply -f k8s/cert-manager-v1.13.2.yml
+	kubectl apply -f k8s/lets-encrypt-prod-issuer.yml
 
 site:
 	kubectl apply -f site.yml
