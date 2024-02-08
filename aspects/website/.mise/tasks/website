@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# mise description="Setup website"
+
+set -euxo pipefail
+
+config='{
+  "apps": {
+      "http": {
+        "servers": {
+          "example": {
+            "listen": [":2015"],
+            "routes": [
+              {
+                "handle": [{
+                  "handler": "static_response",
+                  "body": "Hello, world!"
+                }]
+              }
+            ]
+          }
+        }
+      }
+    }
+}'
+
+curl localhost:2019/load -H "Content-Type: application/json" -d "$config"

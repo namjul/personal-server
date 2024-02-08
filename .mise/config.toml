@@ -1,0 +1,45 @@
+
+[env]
+SERVER = "hobl.at"
+
+[tools]
+sops = "latest"
+
+[tasks.install]
+description = 'Install'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+sops -d --extract '["public_key"]' --output ~/.ssh/id_ed25519_personal-server.pub secrets/ssh.yml
+sops -d --extract '["private_key"]' --output ~/.ssh/id_ed25519_personal-server secrets/ssh.yml
+chmod 600 ~/.ssh/id_ed25519_personal-server.*
+grep -q hobl.at ~/.ssh/config > /dev/null 2>&1 || cat config/ssh_client_config >> ~/.ssh/config
+"""
+
+[tasks.packages]
+description = 'Packages'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+ssh $SERVER 'apt-get update && apt-get install -y curl vim htop ufw git unzip gnupg'
+# Enable automatic security Updates
+ssh $SERVER 'echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections && apt-get install unattended-upgrades -y'
+"""
+
+[tasks.ssh]
+description = 'Setup ssh'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+# Check if the file is different from our git repository and if it is the case re-upload and restart the ssh server
+ssh $SERVER "cat /etc/ssh/sshd_config" | diff  - config/sshd_config || (scp config/sshd_config $SERVER:/etc/ssh/sshd_config && ssh $SERVER systemctl restart ssh.service)
+"""
+
+[tasks.firewall]
+description = 'Setup firewall'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+scp config/ufw.sh $SERVER:/tmp/ufw.sh
+ssh $SERVER 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
+"""
