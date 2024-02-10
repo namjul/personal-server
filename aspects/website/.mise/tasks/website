@@ -3,21 +3,4 @@
 
 set -euxo pipefail
 
-config='{
-  "hello": {
-      "listen": [":443"],
-      "routes": [
-        {
-          "match": [{
-            "host": ["hobl.at", "www.hobl.at", "samuel.hobl.at"]
-          }],
-          "handle": [{
-            "handler": "static_response",
-            "body": "Hello, privacy!"
-          }]
-        }
-      ]
-    }
-}'
-
-curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d "$config"
+curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d @${root}/caddy-config.json

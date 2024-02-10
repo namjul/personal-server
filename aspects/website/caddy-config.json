@@ -1,0 +1,20 @@
+{
+  "hello": {
+    "listen": [":443"],
+    "routes": [
+      {
+        "match": [
+          {
+            "host": ["hobl.at", "www.hobl.at", "samuel.hobl.at"]
+          }
+        ],
+        "handle": [
+          {
+            "handler": "static_response",
+            "body": "Hello, privacy!"
+          }
+        ]
+      }
+    ]
+  }
+}
