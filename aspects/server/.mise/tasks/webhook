@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# mise description="Setup Webhooks"
+
+set -euxo pipefail
+
+go install github.com/adnanh/webhook@latest
+
+cp ${root}/webhook.service /etc/systemd/system/webhook.service
+
+# Reload systemd daemon
+sudo systemctl daemon-reload
+# Enable Soft Serve to start on-boot
+sudo systemctl enable webhook.service
+# Start Soft Serve now!!
+sudo systemctl restart webhook.service

@@ -1,0 +1,14 @@
+[Unit]
+Description=Webhook server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/aspects/server
+ExecStart=/root/.local/bin/mise exec -- webhook -hooks ./hooks.json -verbose
+Restart=always
+RestartSec=1
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
