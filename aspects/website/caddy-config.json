@@ -5,7 +5,7 @@
       {
         "match": [
           {
-            "host": ["hobl.at", "www.hobl.at", "samuel.hobl.at"]
+            "host": ["samuel.hobl.at"]
           }
         ],
         "handle": [
