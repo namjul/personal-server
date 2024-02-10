@@ -7,12 +7,11 @@ go install github.com/charmbracelet/soft-serve/cmd/soft@latest
 
 mkdir -p ~/.soft-serve
 
-cp ${root}/soft-serve.service /etc/systemd/system/soft-serve.service
+sed "s/REPLACE_ME_PUBLIC_KEY/${PUBLIC_KEY}/g" ${root}/soft-serve.service > /etc/systemd/system/soft-serve.service
 
 # Reload systemd daemon
 sudo systemctl daemon-reload
 # Enable Soft Serve to start on-boot
 sudo systemctl enable soft-serve.service
 # Start Soft Serve now!!
-sudo systemctl start soft-serve.service
-# sudo systemctl start soft-serve.service
+sudo systemctl restart soft-serve.service
