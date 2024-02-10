@@ -4,23 +4,20 @@
 set -euxo pipefail
 
 config='{
-  "apps": {
-      "http": {
-        "servers": {
-          "example": {
-            "listen": [":2015"],
-            "routes": [
-              {
-                "handle": [{
-                  "handler": "static_response",
-                  "body": "Hello, world!"
-                }]
-              }
-            ]
-          }
+  "hello": {
+      "listen": [":443"],
+      "routes": [
+        {
+          "match": [{
+            "host": ["hobl.at", "www.hobl.at", "samuel.hobl.at"]
+          }],
+          "handle": [{
+            "handler": "static_response",
+            "body": "Hello, privacy!"
+          }]
         }
-      }
+      ]
     }
 }'
 
-curl localhost:2019/load -H "Content-Type: application/json" -d "$config"
+curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d "$config"
