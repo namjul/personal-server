@@ -7,27 +7,7 @@ go install github.com/charmbracelet/soft-serve/cmd/soft@latest
 
 mkdir -p ~/.soft-serve
 
-systemctl_config="
-[Unit]
-Description=Soft Serve git server 🍦
-Documentation=https://github.com/charmbracelet/soft-serve
-Requires=network-online.target
-After=network-online.target
-
-[Service]
-Type=simple
-Restart=always
-RestartSec=1
-Environment=SOFT_SERVE_DATA_PATH=/root/soft-serve
-Environment=\"SOFT_SERVE_INITIAL_ADMIN_KEYS=$PUBLIC_KEY\"
-ExecStart=/root/.local/bin/mise exec -- soft serve
-WorkingDirectory=/root/aspects/server
-
-[Install]
-WantedBy=multi-user.target
-"
-
-echo "$systemctl_config" > /etc/systemd/system/soft-serve.service
+cp ${root}/soft-serve.service /etc/systemd/system/soft-serve.service
 
 # Reload systemd daemon
 sudo systemctl daemon-reload
