@@ -22,7 +22,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 
-if [[ -z "$git_url" ]]; then
+if [[ -n "$git_url" ]]; then
   rm -rf /var/www
   git clone $git_url /var/www
 fi
