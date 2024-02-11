@@ -10,8 +10,9 @@
         ],
         "handle": [
           {
-            "handler": "static_response",
-            "body": "Hello, privacy!"
+            "handler": "file_server",
+            "root": "/var/www",
+            "hide": [".git"]
           }
         ]
       }
