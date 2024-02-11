@@ -5,6 +5,7 @@ set -euxo pipefail
 
 curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d @${root}/caddy-config.json
 
+quartz_git_url="git://localhost/quartz.git"
 git_url=""
 
 # Loop through arguments
@@ -21,8 +22,23 @@ while [[ "$#" -gt 0 ]]; do
     esac
 done
 
+mkdir -p /var/www
 
-if [[ -n "$git_url" ]]; then
-  rm -rf /var/www
-  git clone $git_url /var/www
+update_quartz=$(test "$git_url" == "$quartz_git_url" && echo "true" || echo "false")
+init_quartz=$(test -d "/var/www/quartz" && echo "false" || echo "true")
+
+
+if test "$init_quartz" = "true" || "$update_quartz" = "true"; then
+  rm -rf /var/www/quartz
+  git clone $quartz_git_url /var/www/quartz
 fi
+
+if test -n "$git_url"; then
+  rm -rf /var/www/content
+  git clone $git_url /var/www/content
+fi
+
+# build quartz
+cd /var/www/quartz
+npm i --ci
+npx quartz build -d ../content
