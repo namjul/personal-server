@@ -10,6 +10,13 @@
         ],
         "handle": [
           {
+            "handler": "encode",
+            "encodings": {
+              "gzip": {},
+              "zstd": {}
+            }
+          },
+          {
             "handler": "file_server",
             "root": "/var/www",
             "hide": [".git"]
