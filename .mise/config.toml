@@ -43,3 +43,14 @@ set -euxo pipefail
 scp config/ufw.sh $SERVER:/tmp/ufw.sh
 ssh $SERVER 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
 """
+
+[tasks.setup-repos]
+description = 'Setup firewall'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+ssh soft repo create memex
+ssh soft repo webhooks create memex http://0.0.0.0:9000/hooks/redeploy-website -e push
+ssh soft repo create quartz
+ssh soft repo webhooks create quartz http://0.0.0.0:9000/hooks/redeploy-website -e push
+"""
