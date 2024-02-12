@@ -29,13 +29,20 @@ init_quartz=$(test -d "/var/www/quartz" && echo "false" || echo "true")
 
 
 if test "$init_quartz" = "true" || "$update_quartz" = "true"; then
-  rm -rf /var/www/quartz
-  git clone $quartz_git_url /var/www/quartz
+    if test ! -d /var/www/quartz; then
+      git clone $quartz_git_url /var/www/quartz
+    fi
+    cd /var/www/quartz
+    git pull origin
 fi
 
 if test -n "$git_url"; then
-  rm -rf /var/www/content
-  git clone $git_url /var/www/content
+
+    if test ! -d /var/www/content; then
+      git clone $git_url /var/www/content
+    fi
+    cd /var/www/content
+    git pull origin
 
   # build quartz
   cd /var/www/quartz
