@@ -49,8 +49,7 @@
                     "prefer": ["zstd", "gzip"]
                   },
                   {
-                    "handler": "file_server",
-                    "hide": [".git"]
+                    "handler": "file_server"
                   }
                 ]
               }
@@ -59,6 +58,57 @@
         ],
         "terminal": true
       }
-    ]
+    ],
+    "errors": {
+      "routes": [
+        {
+          "match": [
+            {
+              "host": ["samuel.hobl.at", "samho.xyz", "www.samho.xyz"]
+            }
+          ],
+          "handle": [
+            {
+              "handler": "subroute",
+              "routes": [
+                {
+                  "handle": [
+                    {
+                      "handler": "vars",
+                      "root": "/var/www/quartz/public"
+                    }
+                  ]
+                },
+                {
+                  "group": "group0",
+                  "handle": [
+                    {
+                      "handler": "rewrite",
+                      "uri": "/{http.error.status_code}.html"
+                    }
+                  ]
+                },
+                {
+                  "handle": [
+                    {
+                      "encodings": {
+                        "gzip": {},
+                        "zstd": {}
+                      },
+                      "handler": "encode",
+                      "prefer": ["zstd", "gzip"]
+                    },
+                    {
+                      "handler": "file_server"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "terminal": true
+        }
+      ]
+    }
   }
 }
