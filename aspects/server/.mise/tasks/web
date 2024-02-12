@@ -10,3 +10,5 @@ if ! [ -x "$(command -v caddy)" ]; then
   sudo apt update
   sudo apt --assume-yes install caddy
 fi
+
+# curl localhost:2019/config/logging -H "Content-Type: application/json" -d @${root}/caddy-logs.json

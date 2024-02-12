@@ -3,7 +3,7 @@
 
 set -euxo pipefail
 
-curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d @${root}/caddy-config.json
+curl localhost:2019/config/apps/http/servers -H "Content-Type: application/json" -d @${root}/caddy.json
 
 quartz_git_url="git://localhost/quartz.git"
 git_url=""

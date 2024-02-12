@@ -1,0 +1,14 @@
+{
+  "logs": {
+    "default": {
+      "writer": {
+        "output": "file",
+        "filename": "/var/log/caddy/logfile.log"
+      },
+      "encoder": {
+        "format": "console"
+      },
+      "level": "INFO"
+    }
+  }
+}
