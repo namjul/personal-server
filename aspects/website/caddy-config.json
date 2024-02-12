@@ -1,5 +1,5 @@
 {
-  "hello": {
+  "website": {
     "listen": [":443"],
     "routes": [
       {
@@ -10,18 +10,54 @@
         ],
         "handle": [
           {
-            "handler": "encode",
-            "encodings": {
-              "gzip": {},
-              "zstd": {}
-            }
-          },
-          {
-            "handler": "file_server",
-            "root": "/var/www/quartz/public",
-            "hide": [".git"]
+            "handler": "subroute",
+            "routes": [
+              {
+                "handle": [
+                  {
+                    "handler": "vars",
+                    "root": "/var/www/quartz/public"
+                  }
+                ]
+              },
+              {
+                "handle": [
+                  {
+                    "handler": "rewrite",
+                    "uri": "{http.matchers.file.relative}"
+                  }
+                ],
+                "match": [
+                  {
+                    "file": {
+                      "try_files": [
+                        "{http.request.uri.path}",
+                        "{http.request.uri.path}.html"
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "handle": [
+                  {
+                    "encodings": {
+                      "gzip": {},
+                      "zstd": {}
+                    },
+                    "handler": "encode",
+                    "prefer": ["zstd", "gzip"]
+                  },
+                  {
+                    "handler": "file_server",
+                    "hide": [".git"]
+                  }
+                ]
+              }
+            ]
           }
-        ]
+        ],
+        "terminal": true
       }
     ]
   }
