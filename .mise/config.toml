@@ -45,8 +45,16 @@ scp config/ufw.sh $SERVER:/tmp/ufw.sh
 ssh $SERVER 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
 """
 
+[tasks.caddy-config]
+description = 'Print caddy config'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+ssh $SERVER 'curl http://localhost:2019/config/'
+"""
+
 [tasks.setup-repos]
-description = 'Setup firewall'
+description = 'Setup repos'
 run = """
 #!/usr/bin/env bash
 set -euxo pipefail
