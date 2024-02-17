@@ -21,7 +21,8 @@ description = 'Packages'
 run = """
 #!/usr/bin/env bash
 set -euxo pipefail
-ssh $SERVER 'apt-get update && apt-get install -y curl vim htop ufw git unzip gnupg'
+ssh $SERVER 'apt-get update -y && apt-get install -y nala'
+ssh $SERVER 'nala -y install curl vim htop ufw git unzip gnupg'
 # Enable automatic security Updates
 ssh $SERVER 'echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections && apt-get install unattended-upgrades -y'
 """
