@@ -15,6 +15,9 @@ fi
 # copy global mise config
 ssh $SERVER "mkdir -p ~/.config/mise" && (scp config/mise.toml $SERVER:~/.config/mise/config.toml)
 
+# copy global mise config
+scp config/default-npm-packages $SERVER:~/.default-npm-packages
+
 # install mise tools
 ssh $SERVER "mise install --yes"
 
