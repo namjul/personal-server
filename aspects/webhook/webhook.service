@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/aspects/server
+WorkingDirectory=/root/aspects/webhook
 ExecStart=/root/.local/bin/mise exec -- webhook -hooks ./hooks.json -verbose
 Restart=always
 RestartSec=1

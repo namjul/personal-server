@@ -1,0 +1,16 @@
+samho.xyz, www.samho.xyz, samuel.hobl.at {
+  root * /var/www/website/quartz/public
+  encode zstd gzip
+  try_files {path} {path}.html
+  file_server {
+    hide .git
+  }
+  handle_errors {
+    rewrite * /{err.status_code}.html
+    file_server
+  }
+}
+
+dashy.samyho.xyz {
+    reverse_proxy localhost:4000
+}

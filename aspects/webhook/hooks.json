@@ -5,7 +5,7 @@
     "command-working-directory": "/root/aspects/website",
     "pass-arguments-to-command": [
       { "source": "string", "name": "run" },
-      { "source": "string", "name": "website" },
+      { "source": "string", "name": "setup" },
       { "source": "string", "name": "--git-url" },
       { "source": "payload", "name": "repository.git_url" }
     ]
