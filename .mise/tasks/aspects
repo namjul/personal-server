@@ -13,7 +13,8 @@ if [ $(ssh $SERVER "echo \$PATH | grep -c -w \".local/bin\"") -eq 0 ]; then
 fi
 
 # copy global mise config
-ssh $SERVER "mkdir -p ~/.config/mise" && (scp config/mise.toml $SERVER:~/.config/mise/config.toml)
+ssh $SERVER "mkdir -p ~/.config/mise"
+rsync -av mise/ $SERVER:~/.config/mise
 
 # copy global mise config
 scp config/default-npm-packages $SERVER:~/.default-npm-packages
