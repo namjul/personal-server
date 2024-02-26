@@ -5,7 +5,7 @@ SERVER = "hobl.at"
 [tools]
 sops = "latest"
 
-[tasks.install]
+[tasks.'setup:local']
 description = 'Install'
 run = """
 #!/usr/bin/env bash

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+# install mise
+if ! [ -x "$(command -v mise)" ]; then
+  ssh $SERVER 'curl https://mise.jdx.dev/install.sh | sh'
+fi
+
+# add mise to PATH
+if [ $(ssh $SERVER "echo \$PATH | grep -c -w \".local/bin\"") -eq 0 ]; then
+  ssh $SERVER "echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc"
+fi
+
+# copy global mise config
+ssh $SERVER "mkdir -p ~/.config/mise"
+rsync -av files/mise/ $SERVER:~/.config/mise
+
+# copy global mise config
+scp files/default-npm-packages $SERVER:~/.default-npm-packages
+
+# install mise tools
+ssh $SERVER "mise install --yes"
