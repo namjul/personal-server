@@ -53,7 +53,18 @@ set -euxo pipefail
 ssh $SERVER 'curl http://localhost:2019/config/'
 """
 
-[tasks.setup-repos]
+[tasks."setup:aspects"]
+description = 'Setup aspects'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+# copy aspects
+rsync -av aspects $SERVER:~/
+# add public key as env
+sops exec-env secrets/ssh.yml 'ssh $SERVER "echo \"PUBLIC_KEY=$public_key\" >> .env"'
+"""
+
+[tasks."setup:repos"]
 description = 'Setup repos'
 run = """
 #!/usr/bin/env bash
