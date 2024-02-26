@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+apt-get update -y && apt-get install -y nala
+nala install -y curl vim htop ufw git unzip gnupg
+
+# Enable automatic security Updates
+echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections && apt-get install unattended-upgrades -y

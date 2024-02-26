@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+# Check if the file is different from our git repository and if it is the case re-upload and restart the ssh server
+cat /etc/ssh/sshd_config | diff  - ${root}/files/sshd_config || (cp ${root}/files/sshd_config /etc/ssh/sshd_config && systemctl restart ssh.service)

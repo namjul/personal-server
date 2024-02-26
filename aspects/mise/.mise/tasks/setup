@@ -14,7 +14,7 @@ fi
 
 # copy global mise config
 mkdir -p ~/.config/mise
-cp -r ${root}/files ~/.config/mise
+cp -r ${root}/files/mise/ ~/.config
 
 # copy global mise config
 scp ${root}/files/default-npm-packages ~/.default-npm-packages
