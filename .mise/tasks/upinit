@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 # install mise
-if ! [ -x "$(command -v mise)" ]; then
+if ! [ $(ssh $SERVER "echo \$(command -v mise)") ]; then
   ssh $SERVER 'curl https://mise.jdx.dev/install.sh | sh'
 fi
 
