@@ -1,0 +1,14 @@
+
+[tasks.'setup:mise']
+description = 'Setup mise configs'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+# copy global mise config
+mkdir -p ~/.config/mise
+cp ${root}/files/mise/ ~/.config/mise
+# copy global mise config
+cp ${root}/files/default-npm-packages ~/.default-npm-packages
+# install mise tools
+mise install --yes
+"""
