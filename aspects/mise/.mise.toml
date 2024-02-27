@@ -6,7 +6,7 @@ run = """
 set -euxo pipefail
 # copy global mise config
 mkdir -p ~/.config/mise
-cp -r ${root}/files/mise/ ~/.config/mise
+cp -r ${root}/files/mise ~/.config
 # copy global mise config
 cp ${root}/files/default-npm-packages ~/.default-npm-packages
 # install mise tools
