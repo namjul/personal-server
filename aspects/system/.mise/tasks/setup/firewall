@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -euxo pipefail
-
-cp ${root}/files/ufw.sh /tmp/ufw.sh
-chmod +x /tmp/ufw.sh && /tmp/ufw.sh
