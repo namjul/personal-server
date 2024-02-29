@@ -65,3 +65,6 @@ rsync -av aspects $SERVER:/home/square
 if [ $(ssh $SERVER "cat /etc/environment | grep -c -w \"PUBLIC_KEY\"") -eq 0 ]; then
   sops exec-env secrets/ssh.yml 'ssh root@$SERVER "echo PUBLIC_KEY=$public_key >> /etc/environment"'
 fi
+
+ssh root@hobl.at "mkdir -p ~/.config/rclone"
+sops -d secrets/rclone.conf | ssh root@hobl.at "cat > ~/.config/rclone/rclone.conf"
