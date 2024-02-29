@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # mise description="Setup radicale server"
 
-# TODO first backup
-
 set -euxo pipefail
 
 nala install -y libffi-dev
@@ -12,14 +10,14 @@ python -m pip install --upgrade radicale
 read ui
 username=$(echo "$ui" | tr -d '[:space:]')
 
-if [ ! -d /var/lib/radicale/collections/collection-root/$username ]; then
-  mkdir -p /var/lib/radicale/collections
+if [ ! -d /home/square/data/radicale/collections/collection-root/$username ]; then
+  mkdir -p /home/square/data/radicale/collections
 
   mkdir -p /etc/radicale && htpasswd -c /etc/radicale/users $username
 
 
   # create for user
-  mkdir -p /var/lib/radicale/collections/collection-root/$username/{calendar,contacts}
+  mkdir -p /home/square/data/radicale/collections/collection-root/$username/{calendar,contacts}
 
   prop=$(cat <<EOF
 {
@@ -29,7 +27,7 @@ if [ ! -d /var/lib/radicale/collections/collection-root/$username ]; then
 }
 EOF
   )
-  echo $prop > /var/lib/radicale/collections/collection-root/$username/calendar/.Radicale.props
+  echo $prop > /home/square/data/radicale/collections/collection-root/$username/calendar/.Radicale.props
 
   prop=$(cat <<EOF
 {
@@ -38,10 +36,10 @@ EOF
 }
 EOF
   )
-  echo $prop > /var/lib/radicale/collections/collection-root/$username/contacts/.Radicale.props
+  echo $prop > /home/square/data/radicale/collections/collection-root/$username/contacts/.Radicale.props
 
-  chmod 600 /var/lib/radicale/collections/collection-root/$username/calendar/.Radicale.props
-  chmod 600 /var/lib/radicale/collections/collection-root/$username/contacts/.Radicale.props
+  chmod 600 /home/square/data/radicale/collections/collection-root/$username/calendar/.Radicale.props
+  chmod 600 /home/square/data/radicale/collections/collection-root/$username/contacts/.Radicale.props
 fi
 
 

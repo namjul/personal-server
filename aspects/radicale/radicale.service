@@ -21,7 +21,7 @@ UMask=0027
 #ProtectKernelModules=true
 #ProtectControlGroups=true
 NoNewPrivileges=true
-ReadWritePaths=/var/lib/radicale/collections
+ReadWritePaths=/home/square/data/radicale/collections
 
 [Install]
 WantedBy=multi-user.target

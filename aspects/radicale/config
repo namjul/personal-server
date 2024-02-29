@@ -2,3 +2,5 @@
 type = htpasswd
 htpasswd_filename = /etc/radicale/users
 htpasswd_encryption = md5
+[storage]
+filesystem_folder = /home/square/data/radicale/collections
