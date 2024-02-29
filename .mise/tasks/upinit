@@ -27,7 +27,9 @@ if ! grep '^square:' /etc/group > /dev/null 2>&1; then
   sudo adduser root square || true
   mkdir -p /home/square
   sudo chgrp square /home/square
+  sudo chgrp -R square /home/square/* || true
   sudo chmod 770 /home/square
+  sudo chmod -R 770 /home/square/* || true
 fi
 ' "
 
