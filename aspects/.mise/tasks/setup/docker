@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-set -euxo pipefail
 # mise depends=["setup"]
+
+set -euxo pipefail
 
 # Add Docker's official GPG key:
 sudo apt-get update

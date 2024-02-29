@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
-set -euxo pipefail
 # mise depends=["setup:rclone"]
 
+set -euxo pipefail
+
+rclone copy /home/square/data remote:backup/server --progress
