@@ -2,17 +2,66 @@
 
 set -euxo pipefail
 
-# install mise
-if ! [ $(ssh $SERVER "echo \$(command -v mise)") ]; then
-  ssh $SERVER 'curl https://mise.jdx.dev/install.sh | sh'
-fi
+# user="samho"
+# ssh root@$SERVER "bash -l -c '
+# if ! id -u $user > /dev/null 2>&1; then
+#   useradd --base-dir /home \
+#     --user-group \
+#     --skel /etc/skel \
+#     --shell /bin/bash \
+#     --home-dir /home/$user \
+#     --create-home \
+#     $user
+#   # adduser $user sudo
+#   passwd -d $user
+#   adduser $user square || true
+#   mkdir -p /home/$user/.ssh
+#   mkdir -p /home/$user/.config/systemd/user
+#   cat /root/.ssh/authorized_keys >> /home/$user/.ssh/authorized_keys
+# fi
+# ' "
 
-# add mise to PATH
-if [ $(ssh $SERVER "echo \$PATH | grep -c -w \".local/bin\"") -eq 0 ]; then
-  ssh $SERVER "echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc"
+ssh root@$SERVER "bash -l -c '
+if ! grep '^square:' /etc/group > /dev/null 2>&1; then
+  sudo addgroup square || true
+  sudo adduser root square || true
+  mkdir -p /home/square
+  sudo chgrp square /home/square
+  sudo chmod 770 /home/square
 fi
+' "
+
+# install mise
+ssh $SERVER 'bash -l -c "
+if ! command -v mise &> /dev/null; then
+  export MISE_INSTALL_PATH="/usr/local/bin/mise"
+  curl https://mise.jdx.dev/install.sh | sh
+fi
+" '
+
+ENV_FILE="/etc/environment"
+ENV_VARS="MISE_DATA_DIR=/home/square/mise/share
+MISE_STATE_DIR=/home/square/mise/state
+MISE_CACHE_DIR=/home/square/mise/cache"
+
+ssh root@$SERVER "bash -l -c '
+if [ -f "$ENV_FILE" ]; then
+    if grep -q \"$ENV_VARS\" \"$ENV_FILE\"; then
+        echo \"Environment variables already set in $ENV_FILE\"
+    else
+        echo -e \"\n$ENV_VARS\" | sudo tee -a \"$ENV_FILE\"
+        echo \"Environment variables added to $ENV_FILE\"
+    fi
+else
+    echo -e \"$ENV_VARS\" | sudo tee \"$ENV_FILE\"
+    echo \"Environment variables added to $ENV_FILE\"
+fi
+' "
 
 # copy aspects
-rsync -av aspects $SERVER:~/
+rsync -av aspects $SERVER:/home/square
+
 # add public key as env
-sops exec-env secrets/ssh.yml 'ssh $SERVER "echo \"PUBLIC_KEY=$public_key\" >> .env"'
+if [ $(ssh $SERVER "cat /etc/environment | grep -c -w \"PUBLIC_KEY\"") -eq 0 ]; then
+  sops exec-env secrets/ssh.yml 'ssh root@$SERVER "echo PUBLIC_KEY=$public_key >> /etc/environment"'
+fi

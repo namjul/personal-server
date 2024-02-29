@@ -1,6 +1,0 @@
-
-[settings]
-experimental = true
-
-[tools]
-ghq = "latest"

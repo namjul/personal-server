@@ -10,16 +10,15 @@ if ! [ -x "$(command -v caddy)" ]; then
 
   go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
   xcaddy build
-  cp ./caddy /usr/bin/caddy
+  cp ./caddy /usr/local/bin/caddy
 
-  groupadd -f --system caddy
-  id -u caddy &>/dev/null || useradd --system \
-    --gid caddy \
-    --create-home \
-    --home-dir /var/lib/caddy \
-    --shell /usr/sbin/nologin \
-    --comment "Caddy web server" \
-    caddy
+  # id -u caddy &>/dev/null || useradd --system \
+  #   --gid square \
+  #   --create-home \
+  #   --home-dir /var/lib/caddy \
+  #   --shell /usr/sbin/nologin \
+  #   --comment "Caddy web server" \
+  #   caddy
 fi
 
 mkdir -p /etc/caddy && cp ${root}/Caddyfile /etc/caddy/Caddyfile

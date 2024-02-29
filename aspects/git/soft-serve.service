@@ -7,12 +7,14 @@ After=network-online.target
 
 [Service]
 Type=simple
+EnvironmentFile=/etc/environment
+DynamicUser=yes
 Restart=always
 RestartSec=1
 Environment=SOFT_SERVE_DATA_PATH=/root/soft-serve
 Environment="SOFT_SERVE_INITIAL_ADMIN_KEYS=REPLACE_ME_PUBLIC_KEY"
-ExecStart=/root/.local/bin/mise exec -- soft serve
-WorkingDirectory=/root/aspects/git
+ExecStart=mise exec -- soft serve
+WorkingDirectory=/home/square/aspects/git
 
 [Install]
 WantedBy=multi-user.target
