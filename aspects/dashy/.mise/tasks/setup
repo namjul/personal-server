@@ -16,7 +16,6 @@ fi
 if test ! -x "$(command -v ghq let https://github.com/Lissy93/dashy.git | grep "dashy")"; then
   ghq get https://github.com/Lissy93/dashy.git
   cd ~/ghq/github.com/Lissy93/dashy
-  yarn
   yarn build
   # TODO add config
   pm2 start "yarn start"
