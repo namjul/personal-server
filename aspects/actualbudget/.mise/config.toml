@@ -1,0 +1,16 @@
+[env]
+ACTUAL_CONFIG_PATH = "{{config_root}}/../config.json"
+
+[tools]
+node = "20.5.1"
+
+[tasks.setup]
+run = """
+mkdir -p /home/square/data/actualbudget/server-files
+mkdir -p /home/square/data/actualbudget/user-files
+npm install --global yarn
+ghq get https://github.com/actualbudget/actual-server.git
+cd ~/ghq/github.com/actualbudget/actual-server/
+yarn install
+pm2 --namespace "actualbudget" start "yarn start"
+"""

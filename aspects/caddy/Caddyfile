@@ -15,6 +15,10 @@ dashy.samho.xyz {
   reverse_proxy localhost:4000
 }
 
+budget.samho.xyz {
+  reverse_proxy localhost:5006
+}
+
 wallabag.samho.xyz {
   reverse_proxy localhost:8081
 }
