@@ -1,0 +1,13 @@
+
+www.samho.xyz, samuel.hobl.at, samho.xyz {
+  root * /var/www/website/quartz/public
+  encode zstd gzip
+  try_files {path} {path}.html
+  file_server {
+    hide .git
+  }
+  handle_errors {
+    rewrite * /{err.status_code}.html
+    file_server
+  }
+}
