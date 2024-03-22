@@ -1,6 +1,6 @@
 
 www.samho.xyz, samuel.hobl.at, samho.xyz {
-  root * /var/www/website/quartz/public
+  root * /var/www/website/
   encode zstd gzip
   try_files {path} {path}.html
   file_server {

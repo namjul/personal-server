@@ -3,48 +3,51 @@
 
 set -euxo pipefail
 
-quartz_git_url="git://localhost/quartz.git"
-git_url=""
-
-# Loop through arguments
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        --git-url)
-            git_url="$2"
-            shift 2 # shift twice to bypass key and value
-            ;;
-        *)
-            echo "Unknown parameter passed: $1"
-            exit 1
-            ;;
-    esac
-done
-
 mkdir -p /var/www/website
+cp -r ${root}/files/* /var/www/website/
 
-update_quartz=$(test "$git_url" == "$quartz_git_url" && echo "true" || echo "false")
-init_quartz=$(test -d "/var/www/website/quartz" && echo "false" || echo "true")
-
-
-if test "$init_quartz" = "true" || "$update_quartz" = "true"; then
-    if test ! -d /var/www/website/quartz; then
-      git clone $quartz_git_url /var/www/website/quartz
-    fi
-    cd /var/www/website/quartz
-    git pull origin
-fi
-
-if test -n "$git_url"; then
-
-    if test ! -d /var/www/website/content; then
-      git clone $git_url /var/www/website/content
-    fi
-    cd /var/www/website/content
-    git pull origin
-
-  # build quartz
-  cd /var/www/website/quartz
-  npm i --ci
-  npx quartz build -d ../content
-fi
-
+# quartz_git_url="git://localhost/quartz.git"
+# git_url=""
+#
+# # Loop through arguments
+# while [[ "$#" -gt 0 ]]; do
+#     case $1 in
+#         --git-url)
+#             git_url="$2"
+#             shift 2 # shift twice to bypass key and value
+#             ;;
+#         *)
+#             echo "Unknown parameter passed: $1"
+#             exit 1
+#             ;;
+#     esac
+# done
+#
+# mkdir -p /var/www/website
+#
+# update_quartz=$(test "$git_url" == "$quartz_git_url" && echo "true" || echo "false")
+# init_quartz=$(test -d "/var/www/website/quartz" && echo "false" || echo "true")
+#
+#
+# if test "$init_quartz" = "true" || "$update_quartz" = "true"; then
+#     if test ! -d /var/www/website/quartz; then
+#       git clone $quartz_git_url /var/www/website/quartz
+#     fi
+#     cd /var/www/website/quartz
+#     git pull origin
+# fi
+#
+# if test -n "$git_url"; then
+#
+#     if test ! -d /var/www/website/content; then
+#       git clone $git_url /var/www/website/content
+#     fi
+#     cd /var/www/website/content
+#     git pull origin
+#
+#   # build quartz
+#   cd /var/www/website/quartz
+#   npm i --ci
+#   npx quartz build -d ../content
+# fi
+#
