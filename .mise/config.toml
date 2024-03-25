@@ -66,6 +66,7 @@ ssh soft repo webhooks create quartz http://0.0.0.0:9000/hooks/redeploy-website 
 
 [tasks.aspect]
 description = 'Manage aspect'
+depends = ["upinit"]
 run = """
 #!/usr/bin/env bash
 set -euxo pipefail
