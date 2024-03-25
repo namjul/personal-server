@@ -63,3 +63,15 @@ ssh soft repo webhooks create memex http://0.0.0.0:9000/hooks/redeploy-website -
 ssh soft repo create quartz
 ssh soft repo webhooks create quartz http://0.0.0.0:9000/hooks/redeploy-website -e push
 """
+
+[tasks.aspect]
+description = 'Manage aspect'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+
+aspect=$1
+cmd=$2
+
+ssh root@$SERVER "cd /home/square/aspects/$aspect && mise run $cmd"
+"""
