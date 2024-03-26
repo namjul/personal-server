@@ -74,5 +74,5 @@ set -euxo pipefail
 aspect=$1
 cmd=$2
 
-ssh root@$SERVER "cd /home/square/aspects/$aspect && mise run $cmd"
+ssh root@$SERVER "cd /home/square/aspects/$aspect && mise install && mise run $cmd"
 """
