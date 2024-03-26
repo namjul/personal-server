@@ -11,3 +11,7 @@ samuel.hobl.at {
     file_server
   }
 }
+
+www.hobl.at, hobl.at {
+    redir https://samuel.hobl.at
+}
