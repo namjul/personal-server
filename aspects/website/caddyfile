@@ -1,5 +1,5 @@
 
-www.samho.xyz, samuel.hobl.at, samho.xyz {
+samuel.hobl.at {
   root * /var/www/website/
   encode zstd gzip
   try_files {path} {path}.html
