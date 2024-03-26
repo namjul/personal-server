@@ -1,4 +1,4 @@
 
-stats.samho.xyz {
+stats.samho.xyz, stats.hobl.at {
   reverse_proxy localhost:5007
 }
