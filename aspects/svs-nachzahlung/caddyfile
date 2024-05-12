@@ -1,5 +1,9 @@
 svs.nachzahlung.at {
   root * /var/www/svs-nachzahlung/
+	# pw: betatester
+  basicauth {
+    admin $2a$14$968qZZjz7N/vx./4iZ1CoOII.m7fHXH3.bC7KfvWUeIy3fQeBf1SO
+  }
   encode zstd gzip
   try_files {path} {path}.html
   file_server {
