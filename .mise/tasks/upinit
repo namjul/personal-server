@@ -21,6 +21,7 @@ set -euxo pipefail
 # fi
 # ' "
 
+# TODO this seems not to work as intended. the permissions don't work for future files
 ssh root@$SERVER "bash -l -c '
 if ! grep '^square:' /etc/group > /dev/null 2>&1; then
   sudo addgroup square || true
@@ -61,7 +62,8 @@ fi
 ' "
 
 # copy aspects
-rsync -av aspects $SERVER:/home/square
+# TODO cd to root first
+rsync -avz aspects $SERVER:/home/square
 
 # add public key as env
 if [ $(ssh $SERVER "cat /etc/environment | grep -c -w \"PUBLIC_KEY\"") -eq 0 ]; then
