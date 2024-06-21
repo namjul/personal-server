@@ -1,6 +1,6 @@
 
 samuel.hobl.at {
-  root * /var/www/website/
+  root * /var/www/website/public
   encode zstd gzip
   try_files {path} {path}.html
   file_server {
