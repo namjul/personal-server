@@ -4,6 +4,7 @@
 set -euxo pipefail
 
 git_url=""
+website_location="/var/www/website"
 
 # Loop through arguments
 while [[ "$#" -gt 0 ]]; do
@@ -20,14 +21,14 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 if test -n "$git_url"; then
-    if test ! -d /var/www/website; then
-      git clone $git_url /var/www/website
+    if test ! -d "$website_location"; then
+      git clone $git_url $website_location
     fi
-    cd /var/www/website
+    cd $website_location
     git pull origin --rebase
 
   # build quartz
-  cd /var/www/website
+  cd $website_location
   npm i --ci
   npx quartz build
 fi
