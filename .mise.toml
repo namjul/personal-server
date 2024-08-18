@@ -5,6 +5,19 @@ SERVER = "hobl.at"
 [tools]
 sops = "latest"
 
+[tasks.init]
+description = 'Idempotent Initialization'
+hide = true
+file = "./scripts/init"
+
+[tasks.up]
+description = 'Idempotent Upload'
+hide = true
+file = "./scripts/up"
+
+[tasks.upinit]
+depends=["init", "up"]
+
 [tasks."setup:local"]
 description = 'Install'
 run = """
@@ -53,24 +66,32 @@ set -euxo pipefail
 ssh $SERVER 'curl http://localhost:2019/config/'
 """
 
-[tasks."repos"]
-description = 'Setup repos'
-run = """
-#!/usr/bin/env bash
-set -euxo pipefail
-ssh soft repo create personal-website
-ssh soft repo webhooks create personal-website http://0.0.0.0:9000/hooks/redeploy-website -e push
-"""
+# [tasks."repos"]
+# description = 'Setup repos'
+# run = """
+# #!/usr/bin/env bash
+# set -euxo pipefail
+# ssh soft repo create personal-website
+# ssh soft repo webhooks create personal-website http://0.0.0.0:9000/hooks/redeploy-website -e push
+# """
+
+# [tasks.aspect]
+# description = 'Manage aspect'
+# depends = ["upinit"]
+# run = """
+# #!/usr/bin/env bash
+# set -euxo pipefail
+# aspect=$1
+# cmd=$2
+# ssh root@$SERVER "cd /home/square/aspects/$aspect && mise install && mise run $cmd"
+# """
 
 [tasks.aspect]
-description = 'Manage aspect'
-depends = ["upinit"]
+description = 'Exec aspect'
 run = """
 #!/usr/bin/env bash
 set -euxo pipefail
-
 aspect=$1
 cmd=$2
-
-ssh root@$SERVER "cd /home/square/aspects/$aspect && mise install && mise run $cmd"
+ssh root@$SERVER "cd ~/aspects/$aspect && mise install && mise run $cmd"
 """

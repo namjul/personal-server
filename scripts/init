@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR
+set -Eeuo pipefail
+
+dirname=$(dirname "$(realpath "$0")")
+
+MISE_CONFIG_FILE="/etc/mise/config.toml"
+ENV_FILE="/etc/environment"
+
+MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | base64)
+
+ENV_VARS=$(cat "$dirname/files$ENV_FILE")
+
+sshcmd="
+# setup square
+if ! grep '^square:' /etc/group > /dev/null 2>&1; then
+  sudo addgroup square || true
+  sudo adduser root square || true
+fi
+
+mkdir -p /home/square/data
+
+chgrp square /home/square
+chgrp -R square /home/square/* || true
+chmod 770 /home/square
+chmod -R 770 /home/square/* || true
+
+chmod g+rws /home/square
+chmod -R g+rws /home/square
+# find /home/square -type d -exec chmod g+s {} +
+# find /home/square -type f -exec chmod g+s {} +
+
+# setup mise envars
+if [ -f "$ENV_FILE" ]; then
+    if grep -q \"$ENV_VARS\" \"$ENV_FILE\"; then
+        echo \"Environment variables already set in $ENV_FILE\"
+    else
+        echo -e \"\n$ENV_VARS\" | sudo tee -a \"$ENV_FILE\"
+        echo \"Environment variables added to $ENV_FILE\"
+    fi
+else
+    echo -e \"$ENV_VARS\" | sudo tee \"$ENV_FILE\"
+    echo \"Environment variables added to $ENV_FILE\"
+fi
+
+# install mise
+if ! command -v mise &> /dev/null; then
+  export MISE_INSTALL_PATH=\"/usr/local/bin/mise\"
+  curl https://mise.jdx.dev/install.sh | sh
+fi
+
+echo -e \"$MISE_CONFIG\" | base64 --decode  | sudo tee \"$MISE_CONFIG_FILE\" > /dev/null
+
+# add aspects as global root tasks
+if ! [[ -L /etc/mise/tasks ]]; then
+ ln -s ~/aspects /etc/mise/tasks
+fi
+
+mise install --yes --quiet
+
+echo \"The following mise tasks are available:\" && mise t
+"
+
+ssh $SERVER "bash -l -c '$sshcmd'"
+
+# add public key as env
+if [ $(ssh $SERVER "cat /etc/environment | grep -c -w \"PUBLIC_KEY\"") -eq 0 ]; then
+  sops exec-env secrets/ssh.yml 'ssh root@$SERVER "echo PUBLIC_KEY=$public_key >> /etc/environment"'
+fi
