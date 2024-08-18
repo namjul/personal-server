@@ -1,0 +1,16 @@
+[Unit]
+Description=Test service
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/aspects/test
+EnvironmentFile=/etc/environment
+#ExecStart=mise exec -- go run ./serve.go
+ExecStart=mise exec -- ./test
+ReadWritePaths=/home/square
+DynamicUser=yes
+
+[Install]
+WantedBy=multi-user.target
