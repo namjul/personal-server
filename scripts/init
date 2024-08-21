@@ -43,10 +43,8 @@ fi
 
 echo -e \"$MISE_CONFIG\" | base64 --decode  | sudo tee \"$MISE_CONFIG_FILE\" > /dev/null
 
-# add aspects as global root tasks
-if ! [[ -L /etc/mise/tasks ]]; then
- ln -s \"$SQUARE_PATH\"/aspects /etc/mise/tasks
-fi
+mkdir -p /etc/mise/tasks
+find \"$SQUARE_PATH\"/aspects -maxdepth 1 -type f -exec ln -sf {} /etc/mise/tasks \;
 
 mise install --yes --quiet
 
