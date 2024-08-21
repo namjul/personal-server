@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# mise alias="test"
 # mise hide=true
 
 trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR

@@ -4,4 +4,4 @@ trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LIN
 set -Eeuo pipefail
 
 # copy aspects
-rsync --quiet --archive --verbose --compress aspects/ $SERVER:~/aspects/
+rsync --quiet --archive --verbose --compress aspectsV2/ $SERVER:/home/square/aspects/

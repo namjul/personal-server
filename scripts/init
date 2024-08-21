@@ -15,22 +15,21 @@ ENV_VARS=$(cat "$dirname/files$ENV_FILE")
 
 sshcmd="
 # setup square
-if ! grep '^square:' /etc/group > /dev/null 2>&1; then
-  sudo addgroup square || true
-  sudo adduser root square || true
-fi
+# if ! grep '^square:' /etc/group > /dev/null 2>&1; then
+#   sudo addgroup square || true
+#   sudo adduser root square || true
+# fi
 
 mkdir -p $SQUARE_PATH
 
-chgrp square $SQUARE_PATH
-chgrp -R square $SQUARE_PATH* || true
-chmod 770 $SQUARE_PATH
-chmod -R 770 $SQUARE_PATH/* || true
-
-chmod g+rws $SQUARE_PATH
-chmod -R g+rws $SQUARE_PATH
-# find $SQUARE_PATH -type d -exec chmod g+s {} +
-# find $SQUARE_PATH -type f -exec chmod g+s {} +
+# chgrp square $SQUARE_PATH
+# chgrp -R square $SQUARE_PATH* || true
+# chmod -R 770 $SQUARE_PATH/* || true
+#
+# chmod g+rws $SQUARE_PATH
+# chmod -R g+rws $SQUARE_PATH
+# # find $SQUARE_PATH -type d -exec chmod g+s {} +
+# # find $SQUARE_PATH -type f -exec chmod g+s {} +
 
 # setup mise envars
 echo -e \"$ENV_VARS\" | sudo tee \"$ENV_FILE\"
@@ -46,7 +45,7 @@ echo -e \"$MISE_CONFIG\" | base64 --decode  | sudo tee \"$MISE_CONFIG_FILE\" > /
 
 # add aspects as global root tasks
 if ! [[ -L /etc/mise/tasks ]]; then
- ln -s ~/aspects /etc/mise/tasks
+ ln -s \"$SQUARE_PATH\"/aspects /etc/mise/tasks
 fi
 
 mise install --yes --quiet
