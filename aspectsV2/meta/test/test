@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# mise hide=true
 
 trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR
 set -Eeuo pipefail
@@ -7,6 +6,7 @@ set -Eeuo pipefail
 echo "---"
 id -gn
 namei -l /home/square
+echo "root: $root"
 echo "---"
 
 mkdir -p /home/square/x
