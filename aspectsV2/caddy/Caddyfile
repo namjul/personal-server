@@ -1,1 +1,1 @@
-import /home/square/aspects/*/caddyfile
+import {$SQUARE_PATH}/aspects/*/caddyfile
