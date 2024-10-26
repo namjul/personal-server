@@ -5,9 +5,8 @@ set -Eeuo pipefail
 
 dirname=$(dirname "$(realpath "$0")")
 
-# TODO search-replace $SQUARE_PATH
-MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | base64)
-ENV_VARS=$(cat "$dirname/files$ENV_FILE")
+MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | sed "s|{SQUARE_PATH}|$SQUARE_PATH|g" | base64)
+ENV_VARS=$(cat "$dirname/files$ENV_FILE" | sed "s|{SQUARE_PATH}|$SQUARE_PATH|g")
 
 sshcmd="
 # setup square
