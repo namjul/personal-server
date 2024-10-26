@@ -5,12 +5,8 @@ set -Eeuo pipefail
 
 dirname=$(dirname "$(realpath "$0")")
 
-SQUARE_PATH="/home/square"
-MISE_CONFIG_FILE="/etc/mise/config.toml"
-ENV_FILE="/etc/environment"
-
+# TODO search-replace $SQUARE_PATH
 MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | base64)
-
 ENV_VARS=$(cat "$dirname/files$ENV_FILE")
 
 sshcmd="
@@ -41,14 +37,11 @@ if ! command -v mise &> /dev/null; then
   curl https://mise.jdx.dev/install.sh | sh
 fi
 
+# copy system mise config
 echo -e \"$MISE_CONFIG\" | base64 --decode  | sudo tee \"$MISE_CONFIG_FILE\" > /dev/null
 
-mkdir -p /etc/mise/tasks
-find \"$SQUARE_PATH\"/aspects -maxdepth 1 -type f -exec ln -sf {} /etc/mise/tasks \;
-
+mise trust --all
 mise install --yes --quiet
-
-echo \"The following mise tasks are available:\" && mise t
 "
 
 ssh $SERVER "bash -l -c '$sshcmd'"

@@ -4,4 +4,14 @@ trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LIN
 set -Eeuo pipefail
 
 # copy aspects
-rsync --quiet --archive --verbose --compress aspectsV2/ $SERVER:/home/square/aspects/
+rsync --quiet -r --verbose --compress aspectsV2/ $SERVER:"$SQUARE_PATH/aspects/"
+
+sshcmd="
+# symlink aspects to mise tasks
+mkdir -p /etc/mise/tasks
+find \"$SQUARE_PATH\"/aspects -maxdepth 1 -type f -exec ln -sf {} /etc/mise/tasks \;
+
+echo \"The following mise tasks are available:\" && mise t
+"
+
+ssh $SERVER "bash -l -c '$sshcmd'"

@@ -1,6 +1,9 @@
 
 [env]
 SERVER = "hobl.at"
+SQUARE_PATH="/home/square"
+MISE_CONFIG_FILE="/etc/mise/config.toml"
+ENV_FILE="/etc/environment"
 
 [tools]
 sops = "latest"
