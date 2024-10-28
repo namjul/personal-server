@@ -87,3 +87,11 @@ aspect=$1
 cmd=${2:-$1}
 ssh root@$SERVER "cd $SQUARE_PATH/aspects/$aspect && mise install && mise run $cmd"
 """
+
+[tasks.log]
+description = 'Log aspect'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+ssh root@$SERVER "journalctl -u {{arg(name="aspect")}}.service -f"
+"""
