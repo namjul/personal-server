@@ -24,4 +24,8 @@ function ..() {
     cd ..
 }
 
+log() {
+    journalctl -u "$1.service" -f
+}
+
 export PATH="$HOME/.local/bin:$PATH"
