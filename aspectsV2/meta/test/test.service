@@ -5,12 +5,12 @@ Requires=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/aspects/test
 EnvironmentFile=/etc/environment
+ExecStart=/bin/bash -c "cd \"${SQUARE_PATH}/aspects/meta\";mise run testing;"
 #ExecStart=mise exec -- go run ./serve.go
-ExecStart=mise exec -- ./test
-ReadWritePaths=/home/square
+Group=square
 DynamicUser=yes
+ReadWritePaths=/home/square
 
 [Install]
 WantedBy=multi-user.target

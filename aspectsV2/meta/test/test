@@ -4,13 +4,17 @@ trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LIN
 set -Eeuo pipefail
 
 echo "---"
-id -gn
-namei -l /home/square
+id
+namei -l $SQUARE_PATH
 echo "root: $root"
+namei -l $SQUARE_PATH/data
 echo "---"
 
-mkdir -p /home/square/x
-touch /home/square/x/jojo
+mkdir -p $SQUARE_PATH/x
+touch $SQUARE_PATH/x/jojo
+
+mkdir -p $SQUARE_PATH/data/share/test
+touch $SQUARE_PATH/data/share/test/testing.txt
 
 
 # i am in the group "square"
