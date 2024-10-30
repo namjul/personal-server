@@ -25,7 +25,7 @@ function ..() {
 }
 
 log() {
-    journalctl -u "$1.service" -f
+    journalctl -u "$1.service" | vim -
 }
 
 export PATH="$HOME/.local/bin:$PATH"
