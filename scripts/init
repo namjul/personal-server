@@ -9,20 +9,22 @@ MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | sed "s|{SQUARE_PATH}|$SQUA
 ENV_VARS=$(cat "$dirname/files$ENV_FILE" | sed "s|{SQUARE_PATH}|$SQUARE_PATH|g")
 
 sshcmd="
+
 # setup square
-# if ! grep '^square:' /etc/group > /dev/null 2>&1; then
-#   sudo addgroup square || true
-#   sudo adduser root square || true
-# fi
+if ! grep '^square:' /etc/group > /dev/null 2>&1; then
+  sudo addgroup square || true
+  sudo adduser root square || true
+fi
 
-mkdir -p $SQUARE_PATH
+# create dirs
+mkdir -p $SQUARE_PATH/data/{cache,share,state}
 
-# chgrp square $SQUARE_PATH
-# chgrp -R square $SQUARE_PATH* || true
+chgrp square $SQUARE_PATH
+chgrp -R square $SQUARE_PATH* || true
 # chmod -R 770 $SQUARE_PATH/* || true
-#
-# chmod g+rws $SQUARE_PATH
-# chmod -R g+rws $SQUARE_PATH
+
+#chmod g+rws $SQUARE_PATH
+chmod -R g+rws $SQUARE_PATH
 # # find $SQUARE_PATH -type d -exec chmod g+s {} +
 # # find $SQUARE_PATH -type f -exec chmod g+s {} +
 
