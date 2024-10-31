@@ -1,0 +1,20 @@
+
+[Unit]
+Description=Soft Serve git server 🍦
+Documentation=https://github.com/charmbracelet/soft-serve
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/environment
+Environment=SOFT_SERVE_DATA_PATH=/home/square/data/soft-serve
+Environment="SOFT_SERVE_INITIAL_ADMIN_KEYS=REPLACE_ME_PUBLIC_KEY"
+ExecStart=/bin/bash -c "cd \"${SQUARE_PATH}/aspects/soft-serve\";mise exec -- soft serve;"
+#ReadWritePaths=/home/square
+#DynamicUser=yes
+#Restart=always
+#RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

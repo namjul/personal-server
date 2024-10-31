@@ -1,0 +1,6 @@
+
+[tools]
+go = "1.21"
+
+[tasks.soft-serve]
+file = './default'
