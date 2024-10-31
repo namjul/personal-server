@@ -7,9 +7,14 @@ Requires=network-online.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
-ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
 EnvironmentFile=/etc/environment
+DynamicUser=yes
+Group=square
+ReadWritePaths=/home/square
+WorkingDirectory=/home/square/aspects/caddy
+#ExecStart=mise exec -- env
+ExecStart=mise exec -- caddy run --environ
+ExecReload=mise exec -- caddy reload --force
 TimeoutStopSec=5s
 LimitNOFILE=1048576
 PrivateTmp=true

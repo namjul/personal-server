@@ -4,24 +4,19 @@
 
 set -euxo pipefail
 
+# set write permission for group
+mkdir -m 770 -p $SQUARE_PATH/data/share/caddy
+
 if ! [ -x "$(command -v caddy)" ]; then
   ghq get https://github.com/caddyserver/caddy.git
   cd ~/ghq/github.com/caddyserver/caddy
 
   go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
   xcaddy build
-  cp ./caddy /usr/local/bin/caddy
-
-  # id -u caddy &>/dev/null || useradd --system \
-  #   --gid square \
-  #   --create-home \
-  #   --home-dir /var/lib/caddy \
-  #   --shell /usr/sbin/nologin \
-  #   --comment "Caddy web server" \
-  #   caddy
+  cp ./caddy ${root}/bin/caddy
 fi
 
-mkdir -p /etc/caddy && cp ${root}/Caddyfile /etc/caddy/Caddyfile
+# mkdir -p /etc/caddy && cp ${root}/Caddyfile /etc/caddy/Caddyfile
 cp ${root}/caddy.service /etc/systemd/system/caddy.service
 
 systemctl daemon-reload
