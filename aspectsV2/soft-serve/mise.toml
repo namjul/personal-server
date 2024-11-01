@@ -7,3 +7,8 @@ go = "1.21"
 
 [tasks.default]
 file = './default'
+
+[task_config]
+includes = [
+  "tasks.toml"
+]

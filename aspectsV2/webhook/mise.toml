@@ -8,8 +8,3 @@ file = "./default"
 [tasks.start]
 hide = true
 file = "./start"
-
-[task_config]
-includes = [
-  "tasks.toml"
-]

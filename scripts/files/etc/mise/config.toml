@@ -6,3 +6,9 @@ experimental = true
 
 [tools]
 ghq = "latest"
+
+[task_config]
+includes = [
+  "tasks",
+  "tasks.toml"
+]
