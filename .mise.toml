@@ -85,7 +85,8 @@ run = """
 set -euxo pipefail
 aspect=$1
 cmd=${2:-$1}
-ssh root@$SERVER "cd $SQUARE_PATH/aspects/$aspect && mise install && mise run $cmd"
+shift 2
+ssh root@$SERVER "cd $SQUARE_PATH/aspects/$aspect && mise trust && mise install && mise run $cmd $@"
 """
 
 [tasks.log]
