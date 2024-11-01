@@ -8,11 +8,11 @@ After=network-online.target
 [Service]
 Type=simple
 EnvironmentFile=/etc/environment
-Environment=SOFT_SERVE_DATA_PATH=/home/square/data/soft-serve
-Environment="SOFT_SERVE_INITIAL_ADMIN_KEYS=REPLACE_ME_PUBLIC_KEY"
-ExecStart=/bin/bash -c "cd \"${SQUARE_PATH}/aspects/soft-serve\";mise exec -- soft serve;"
-#ReadWritePaths=/home/square
-#DynamicUser=yes
+DynamicUser=yes
+Group=square
+ReadWritePaths=/home/square
+WorkingDirectory=/home/square/aspects/soft-serve
+ExecStart=mise exec -- soft serve
 #Restart=always
 #RestartSec=1
 

@@ -7,9 +7,7 @@ mise install --yes
 
 go install github.com/charmbracelet/soft-serve/cmd/soft@latest
 
-mkdir -p ~/.soft-serve
-
-sed "s/REPLACE_ME_PUBLIC_KEY/${PUBLIC_KEY}/g" ${root}/soft-serve.service > /etc/systemd/system/soft-serve.service
+mkdir -m 770 -p $SQUARE_PATH/data/share/soft-serve
 
 sudo systemctl daemon-reload
 sudo systemctl enable soft-serve.service
