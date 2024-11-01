@@ -5,5 +5,5 @@ SOFT_SERVE_INITIAL_ADMIN_KEYS = "{{env.PUBLIC_KEY}}"
 [tools]
 go = "1.21"
 
-[tasks.soft-serve]
+[tasks.default]
 file = './default'
