@@ -1,0 +1,16 @@
+samuel.hobl.at {
+  root * {$SQUARE_PATH}/data/share/website/personal-website/public
+  encode zstd gzip
+  try_files {path} {path}.html
+  file_server {
+    hide .git
+  }
+  handle_errors {
+    rewrite * /{err.status_code}.html
+    file_server
+  }
+}
+
+www.hobl.at, hobl.at {
+    redir https://samuel.hobl.at
+}
