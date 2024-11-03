@@ -10,3 +10,11 @@ go = "1.20"
 
 [tasks.default]
 file = './default'
+
+[tasks."caddy:config"]
+description = 'Print caddy config'
+run = """
+#!/usr/bin/env bash
+set -euxo pipefail
+ssh $SERVER 'curl http://localhost:2019/config/'
+"""

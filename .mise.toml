@@ -61,14 +61,6 @@ scp config/ufw.sh root@$SERVER:/tmp/ufw.sh
 ssh root@$SERVER 'chmod +x /tmp/ufw.sh && /tmp/ufw.sh'
 """
 
-[tasks.caddy-config]
-description = 'Print caddy config'
-run = """
-#!/usr/bin/env bash
-set -euxo pipefail
-ssh $SERVER 'curl http://localhost:2019/config/'
-"""
-
 # [tasks."repos"]
 # description = 'Setup repos'
 # run = """
@@ -89,7 +81,7 @@ shift 2
 ssh root@$SERVER "cd $SQUARE_PATH/aspects/$aspect && mise trust && mise install && mise run $cmd $@"
 """
 
-[tasks.log]
+[tasks."aspect:log"]
 description = 'Log aspect'
 run = """
 #!/usr/bin/env bash
