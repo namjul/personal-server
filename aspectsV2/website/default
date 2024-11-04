@@ -10,7 +10,7 @@ if test -n "$usage_repo"; then
 
   repo_path="$SITE_PATH/$usage_repo"
 
-  if ! git -C $x rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  if ! git -C $repo_path rev-parse --is-inside-work-tree > /dev/null 2>&1; then
       git clone "ssh://localhost:23231/${usage_repo}.git" $repo_path
       # (cd ../webhook && mise r run --name $usage_repo --id redeploy-website)
   fi
