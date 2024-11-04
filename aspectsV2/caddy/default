@@ -13,6 +13,7 @@ if ! [ -x "$(command -v caddy)" ]; then
 
   go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
   xcaddy build
+  mkdir -p ${root}/bin
   cp ./caddy ${root}/bin/caddy
 fi
 
