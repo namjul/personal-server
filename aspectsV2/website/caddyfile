@@ -11,10 +11,6 @@ thepopupschool.org {
   }
 }
 
-stats.samuel.hobl.at {
-  reverse_proxy localhost:5007
-}
-
 samuel.hobl.at {
   root * {$SQUARE_PATH}/data/share/website/personal-website/public
   encode zstd gzip
@@ -31,3 +27,8 @@ samuel.hobl.at {
 www.hobl.at, hobl.at {
     redir https://samuel.hobl.at
 }
+
+stats.thepopupschool.org, stats.samuel.hobl.at {
+  reverse_proxy localhost:5007
+}
+
