@@ -4,12 +4,13 @@ trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LIN
 set -Eeuo pipefail
 
 dirname=$(dirname "$(realpath "$0")")
+FILES_DIR="$dirname/files"
+TEMP_DIR=$(mktemp -d)
 
-MISE_CONFIG_FILE="/etc/mise/config.toml"
-ENV_FILE="/etc/environment"
+cp -r "$FILES_DIR" "$TEMP_DIR"
+find "$TEMP_DIR" -type f -exec sed -i "s|{SQUARE_PATH}|$SQUARE_PATH|g" {} +
 
-MISE_CONFIG=$(cat "$dirname/files$MISE_CONFIG_FILE" | sed "s|{SQUARE_PATH}|$SQUARE_PATH|g" | base64)
-ENV_VARS=$(cat "$dirname/files$ENV_FILE" | sed "s|{SQUARE_PATH}|$SQUARE_PATH|g")
+rsync -rpt --quiet --compress "$TEMP_DIR/files/" $SERVER:"/"
 
 sshcmd="
 
@@ -30,8 +31,8 @@ chgrp square $SQUARE_PATH
 chmod -R g+s $SQUARE_PATH
 
 # setup mise envars
-echo -e \"$ENV_VARS\" | sudo tee \"$ENV_FILE\"
-echo \"Environment variables added to $ENV_FILE\"
+# echo -e \"ENV_VARS\" | sudo tee \"ENV_FILE\"
+# echo \"Environment variables added to ENV_FILE\"
 
 # install mise
 if ! command -v mise &> /dev/null; then
@@ -40,7 +41,7 @@ if ! command -v mise &> /dev/null; then
 fi
 
 # copy system mise config
-echo -e \"$MISE_CONFIG\" | base64 --decode  | sudo tee \"$MISE_CONFIG_FILE\" > /dev/null
+# echo -e \"MISE_CONFIG\" | base64 --decode  | sudo tee \"MISE_CONFIG_FILE\" > /dev/null
 
 mise trust --all
 mise install --yes --quiet
