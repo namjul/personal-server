@@ -1,1 +1,1 @@
-Move to https://github.com/namjul/dotfiles/tree/master/aspects/server
+Moved to https://github.com/namjul/dotfiles/tree/master/aspects/server
